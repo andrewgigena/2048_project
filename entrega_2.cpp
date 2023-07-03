@@ -1,3 +1,7 @@
+// Integrantes:
+// - Andrew Gigena, CI: 5111580-2, Email: mail@andrewgigena.dev
+// - Horacio Duarte, CI: 5096812-7, Email: raulduarte45@hotmail.com
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,217 +21,6 @@ struct Jugador {
   int puntuacion;
 };
 
-struct AdministradorJugadores {
-  struct Jugador jugadores[MAXIMOS_JUGADORES];
-  int num_jugadores = 0;
-
-  void administrar() {
-    char letramenu;
-    int salir = 0;
-    do {
-      printf(
-          "¡Bienvenido al juego 2048!\n(R)egistrar (L)istado (J)ugar (D)atos "
-          "(S)alir\n\n");
-
-      letramenu = getchar();
-      getchar();
-      switch (letramenu) {
-      case 'R':
-        if (num_jugadores < 10) {
-          crear_jugador();
-        } else {
-          printf(
-              "Maximo de 10 jugadores permitido, borre para registrar jugador");
-        }
-        break;
-      case 'L':
-        listar_jugadores();
-        break;
-      case 'J':
-        jugar(jugadores);
-        break;
-      case 'D':
-        mostrar_datos_jugador(jugadores);
-        break;
-      case 'S':
-        printf("Nos vemos pronto!:\n");
-        salir++;
-        break;
-      default:
-        printf("Entrada inválida, vuelva a intentarlo:\n");
-        break;
-      }
-    } while (salir != 1);
-  }
-
-  bool registrar_jugador() { return true; }
-
-  bool listar_jugador() { return true; }
-
-  void listar_jugadores() {
-    for (int i = 0; i < num_jugadores; i++) {
-      if (jugadores[i].activado == true) {
-        imprimir_jugador(jugadores[i], false);
-        printf("\n");
-      }
-    }
-  }
-
-  bool mostrar_datos_jugador() { return true; }
-
-  bool jugar() { return true; }
-
-  void imprimir_jugador(Jugador jugador, bool detallado) {
-    printf("Alias: %s\n", jugador.alias);
-    if (detallado == true) {
-      printf("Nombre: %s\n", jugador.nombre);
-      printf("Apellido: %s\n", jugador.apellido);
-      printf("Edad: %d\n", jugador.edad);
-    }
-    printf("Puntaje: %d\n", jugador.puntuacion);
-  }
-
-  
-
-  bool mostrar_datos_jugador(struct Jugador jugadores[MAXIMOS_JUGADORES]) {
-    char alias[6];
-    printf("Ingrese el alias del jugador a buscar: ");
-    scanf("%s", alias);
-    getchar(); // Capturar el salto de línea después de ingresar el alias
-
-    // Buscar al jugador por el alias
-    struct Jugador *jugador = NULL;
-    for (int i = 0; i < num_jugadores; i++) {
-      if (strcmp(jugadores[i].alias, alias) == 0) {
-        jugador = &jugadores[i];
-        break;
-      }
-    }
-
-    // Verificar si el jugador existe
-    if (jugador == NULL) {
-      printf("El alias del jugador no existe en el sistema.\n");
-      return false;
-    }
-
-    // Mostrar todos los datos del jugador
-    printf("Alias: %s\n", jugador->alias);
-    printf("Nombre: %s\n", jugador->nombre);
-    printf("Apellido: %s\n", jugador->apellido);
-    printf("Edad: %d\n", jugador->edad);
-    printf("Puntaje: %d\n", jugador->puntuacion);
-
-    return true;
-  }
-
-  void mostrar_jugador_alias(Jugador jugadores[MAXIMOS_JUGADORES]) {
-    char alias[6];
-    printf("Ingrese el alias del jugador a mostrar\n");
-    scanf("%s", alias);
-
-    for (int i = 0; i > MAXIMOS_JUGADORES; i++) {
-      if (jugadores[i].activado == true && jugadores[i].alias == alias) {
-        imprimir_jugador(jugadores[i], true);
-        break;
-      }
-    }
-  }
-
-  bool jugar(struct Jugador jugadores[MAXIMOS_JUGADORES]) {
-    char alias[6];
-    printf("Ingrese el alias del jugador que participará: ");
-    scanf("%s", alias);
-    getchar(); // Capturar el salto de línea después de ingresar el alias
-
-    // Buscar al jugador por el alias
-    struct Jugador *jugador = NULL;
-    for (int i = 0; i < num_jugadores; i++) {
-      if (strcmp(jugadores[i].alias, alias) == 0) {
-        jugador = &jugadores[i];
-        break;
-      }
-    }
-
-    // Verificar si el jugador existe
-    if (jugador == NULL) {
-      printf("El alias del jugador no existe en el sistema.\n");
-      return false;
-    }
-
-    // Mostrar mensaje personalizado al jugador
-    printf("¡Bienvenido, %s %s! ¡Buena suerte en el juego 2048!\n",
-           jugador->nombre, jugador->apellido);
-    
-    // Inicializar el juego
-
-
-    return true;
-  }
-
-  void inicializar_jugadores(Jugador jugadores[MAXIMOS_JUGADORES]) {
-    for (int i = 0; i > MAXIMOS_JUGADORES; i++) {
-      jugadores[i].activado = false;
-    }
-  }
-
-  bool crear_jugador() {
-    // Prevalidar: Si ya se registraron 10 jugadores, no se puede registrar más
-    // bool disponible = false;
-    // for (int i = 0; i < MAXIMOS_JUGADORES; i++) {
-    //   if (jugadores[i].activado == false) {
-    //     jugadores[i] = crear_jugador();
-    //     disponible = true;
-    //   }
-    // }
-    // return disponible;
-
-    Jugador nuevo_jugador;
-    int i;
-    if (num_jugadores == MAXIMOS_JUGADORES) {
-      printf("No hay lugar disponible para registrar más jugadores.\n");
-      return false;
-    }
-
-    printf("Ingrese los datos del nuevo jugador\n");
-    printf("Alias: ");
-    scanf("%s", nuevo_jugador.alias);
-    for (int i = 0; i < num_jugadores; i++) {
-      if (strcmp(nuevo_jugador.alias, jugadores[i].alias) == 0) {
-        printf("Ya existe este alias");
-        nuevo_jugador.activado = false;
-      } else {
-        printf("Nombre: ");
-        scanf("%s", nuevo_jugador.nombre);
-        printf("Apellido: ");
-        scanf("%s", nuevo_jugador.apellido);
-        printf("Edad: ");
-        scanf("%d", &nuevo_jugador.edad);
-        nuevo_jugador.puntuacion = 0;
-        nuevo_jugador.activado = true;
-        jugadores[num_jugadores] = nuevo_jugador;
-        num_jugadores++;
-        printf("Jugador registrado correctamente");
-      }
-    }
-
-    // TODO: Agregar el nuevo jugador al arreglo de jugadores
-    return true;
-  }
-
-  void borrar_jugador(Jugador jugadores[MAXIMOS_JUGADORES]) {
-    bool borrado = false; //
-    char alias[6];
-
-    do {
-      printf("Ingrese el alias del jugador a eliminar\n");
-      scanf("%s", alias);
-      for (int i = 0; i < MAXIMOS_JUGADORES; i++) {
-      }
-    } while (borrado == false);
-    printf("Borrado exitoso");
-  }
-};
-
 struct AdministradorJuego {
   int tablero[LADO_TABLERO][LADO_TABLERO];
   int tablero_premovimiento[LADO_TABLERO][LADO_TABLERO];
@@ -241,18 +34,18 @@ struct AdministradorJuego {
     // Comenzamos el juego
     printf("Utiliza las teclas para mover las fichas. Las fichas con el mismo "
            "número se suman en una cuando se tocan. ¡Súmalos para llegar a "
-           "2048!\n\n");
+           "2048!\n");
 
     // Jugar
     int puntuacion_actual = 0;
     char letra;
-    int salir = 0;
+    bool continuar_jugando = true;
     do {
       clonar_tablero();
       mostrar_tablero();
-      printf(
-          "Nuevo movimiento, Subir(W), Bajar(S), Izquierda(A), Derecha(D): \n");
-      letra = getchar();
+      printf("Nuevo movimiento, Subir(W), Bajar(S), Izquierda(A), Derecha(D), "
+             "Rendirse(R): \n");
+      scanf("%c", &letra);
 
       switch (letra) {
       case 'D':
@@ -273,16 +66,12 @@ struct AdministradorJuego {
         break;
       case 'R':
       case 'r':
-        salir = 1;
+        continuar_jugando = false;
         break;
       default:
         printf("Entrada inválida, vuelva a intentarlo:\n");
         break;
       }
-
-      // Limpiar buffer
-      while (letra != '\n')
-        letra = getchar();
 
       if (!hay_movimientos_validos()) {
         break;
@@ -294,7 +83,7 @@ struct AdministradorJuego {
       }
 
       puntuacion_actual = calcular_puntuacion();
-    } while (puntuacion_actual < MAXIMO_PUNTAJE || salir == 0);
+    } while (puntuacion_actual < MAXIMO_PUNTAJE && continuar_jugando == true);
 
     // Resulado del juego
     mostrar_tablero();
@@ -304,7 +93,7 @@ struct AdministradorJuego {
       printf("Perdiste, lograste un puntaje de %d \n", puntuacion_actual);
     }
 
-    return 0;
+    return puntuacion_actual;
   }
 
   // Genera un numero aleatoriamente de 2 o 4
@@ -544,13 +333,237 @@ struct AdministradorJuego {
   }
 };
 
+struct AdministradorJugadores {
+  struct Jugador jugadores[MAXIMOS_JUGADORES];
+  Jugador jugador_seleccionado;
+  int num_jugadores = 0;
+
+  // init
+  void inicialiar() {
+    for (int i = 0; i > MAXIMOS_JUGADORES; i++) {
+      jugadores[i].activado = false;
+    }
+  }
+
+  // Opcion (L)istar
+  void listar_jugadores() {
+    printf("  Alias  || Puntaje  \n");
+    for (int i = 0; i < num_jugadores; i++) {
+      if (jugadores[i].activado == true) {
+        printf("   %s     ||   %d   \n", jugadores[i].alias,
+               jugadores[i].puntuacion);
+      }
+    }
+  }
+
+  // Opcion (D)atos
+  bool listar_jugador() {
+    char alias[6];
+    printf("Ingrese el alias del jugador a buscar:\n");
+    scanf("%s", alias);
+
+    // Buscar al jugador por el alias
+    Jugador *jugador = NULL;
+    for (int i = 0; i < num_jugadores; i++) {
+      if (strcmp(jugadores[i].alias, alias) == 0 &&
+          jugadores[i].activado == true) {
+        jugador = &jugadores[i];
+        break;
+      }
+    }
+
+    // Verificar si el jugador existe
+    if (jugador == NULL) {
+      printf("El alias del jugador no existe en el sistema.\n");
+      return false;
+    }
+
+    // Mostrar todos los datos del jugador
+    printf("Nombre: %s\n", jugador->nombre);
+    printf("Apellido: %s\n", jugador->apellido);
+    printf("Edad: %d\n", jugador->edad);
+    printf("Puntaje: %d\n", jugador->puntuacion);
+
+    return true;
+  }
+
+  // Opcion (J)ugar
+  bool seleccionar_jugador() {
+    char alias[6];
+    printf("Ingrese el alias del jugador que participará: ");
+    scanf("%s", alias);
+
+    // Buscar al jugador por el alias
+    struct Jugador *jugador = NULL;
+    for (int i = 0; i < num_jugadores; i++) {
+      if (strcmp(jugadores[i].alias, alias) == 0) {
+        jugador = &jugadores[i];
+        break;
+      }
+    }
+
+    // Verificar si el jugador existe
+    if (jugador == NULL) {
+      printf("El alias del jugador no existe en el sistema.\n");
+      return false;
+    }
+
+    // Mostrar mensaje personalizado al jugador
+    printf("¡Bienvenido, %s %s! ¡Buena suerte en el juego 2048!\n",
+           jugador->nombre, jugador->apellido);
+
+    jugador_seleccionado = *jugador;
+    return true;
+  }
+
+  // Opcion (J)ugar
+  void sumar_puntuacion_jugador_seleccionado(int puntuacion) {
+    for (int i = 0; i < num_jugadores; i++) {
+      if (strcmp(jugadores[i].alias, jugador_seleccionado.alias) == 0) {
+        jugadores[i].puntuacion += puntuacion;
+        break;
+      }
+    }
+  }
+
+  // Opcion (R)egistrar
+  bool registrar_jugador() {
+    Jugador nuevo_jugador;
+    if (num_jugadores == MAXIMOS_JUGADORES) {
+      printf("No hay lugar disponible para registrar más jugadores.\n");
+      return false;
+    }
+
+    printf("Ingrese los datos del nuevo jugador\n");
+    printf("Alias: ");
+    scanf("%s", nuevo_jugador.alias);
+    for (int i = 0; i < MAXIMOS_JUGADORES; i++) {
+      if (jugadores[i].activado == true &&
+          strcmp(nuevo_jugador.alias, jugadores[i].alias) == 0) {
+        printf("Ya existe este alias\n");
+        nuevo_jugador.activado = false;
+        break;
+      } else {
+        printf("Nombre: ");
+        scanf("%s", nuevo_jugador.nombre);
+        printf("Apellido: ");
+        scanf("%s", nuevo_jugador.apellido);
+        printf("Edad: ");
+        scanf("%d", &nuevo_jugador.edad);
+        nuevo_jugador.puntuacion = 0;
+        nuevo_jugador.activado = true;
+        jugadores[num_jugadores] = nuevo_jugador;
+        num_jugadores++;
+        printf("Jugador registrado correctamente\n");
+        break;
+      }
+    }
+
+    return true;
+  }
+
+  // Opcion (E)liminar
+  void eliminar_jugador() {
+    bool borrado = false;
+    char alias[6];
+
+    printf("Ingrese el alias del jugador a eliminar\n");
+    scanf("%s", alias);
+
+    for (int i = 0; i < MAXIMOS_JUGADORES; i++) {
+      if (jugadores[i].activado == true &&
+          strcmp(jugadores[i].alias, alias) == 0) {
+        jugadores[i].activado = false;
+        borrado = true;
+        break;
+      }
+    }
+
+    if (borrado == true) {
+      printf("Borrado exitoso\n");
+    } else {
+      printf("Jugador no ha sido encontrado.\n");
+    }
+  }
+};
+
+void print_separador() {
+  printf("========================================================\n");
+}
 
 int main() {
   // Establecemos aleatoriedad
   srand(time(NULL));
 
-  AdministradorJugadores administrador_jugadores;
-  AdministradorJuego administrador_juego;
+  AdministradorJuego admin_juego;
+  AdministradorJugadores admin_jugadores;
+  admin_jugadores.inicialiar();
+
+  char letramenu;
+  bool salir = true;
+  int puntuacion = 0;
+  bool seleccion_correcta;
+  printf("¡Bienvenido al juego 2048!\n");
+  do {
+    print_separador();
+    printf("(R)egistrar (L)istado (J)ugar (D)atos (E)liminar (S)alir\n");
+    print_separador();
+    letramenu = getchar();
+    switch (letramenu) {
+    case 'R':
+    case 'r':
+      printf("Se ha seleccionado: Registrar\n");
+      print_separador();
+      if (admin_jugadores.num_jugadores < 10) {
+        admin_jugadores.registrar_jugador();
+      } else {
+        printf(
+            "Maximo de 10 jugadores permitido, borre para registrar jugador\n");
+      }
+      break;
+    case 'L':
+    case 'l':
+      printf("Se ha seleccionado: Listado\n");
+      print_separador();
+      admin_jugadores.listar_jugadores();
+      break;
+    case 'J':
+    case 'j':
+      printf("Se ha seleccionado: Jugar\n");
+      print_separador();
+      seleccion_correcta = admin_jugadores.seleccionar_jugador();
+      if (seleccion_correcta == true) {
+        puntuacion = admin_juego.jugar();
+        admin_jugadores.sumar_puntuacion_jugador_seleccionado(puntuacion);
+      }
+      break;
+    case 'D':
+    case 'd':
+      printf("Se ha seleccionado: Datos\n");
+      print_separador();
+      admin_jugadores.listar_jugador();
+      break;
+    case 'E':
+    case 'e':
+      printf("Se ha seleccionado: Eliminar\n");
+      print_separador();
+      admin_jugadores.eliminar_jugador();
+      break;
+    case 'S':
+    case 's':
+      print_separador();
+      salir = false;
+      printf("Nos vemos pronto!:\n");
+      break;
+    default:
+      print_separador();
+      printf("Entrada inválida, vuelva a intentarlo:\n");
+      break;
+    }
+    // Limpiar buffer
+    while (letramenu != '\n')
+      letramenu = getchar();
+  } while (salir == true);
 
   return 0;
 }
